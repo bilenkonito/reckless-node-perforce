@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+const p4options = {
   _change: {
     cmd: 'Change:',
     type: String,
@@ -118,3 +116,5 @@ module.exports = {
     category: 'mixed'
   }
 };
+
+export default p4options;

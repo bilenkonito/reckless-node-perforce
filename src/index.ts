@@ -1,14 +1,18 @@
 'use strict';
 
-var os = require('os');
-const { exec, spawn } = require('child_process');
-var p4options = require('./p4options');
-const { stdout } = require('process');
+import * as os from 'os';
+import { exec, spawn } from 'child_process';
+import p4options from './p4options';
 var ztagRegex = /^\.\.\.\s+(\w+)\s+(.+)/;
 
-var p4 = process.platform === 'win32' ? 'p4.exe' : 'p4';
+const p4 = process.platform === 'win32' ? 'p4.exe' : 'p4';
 
-function camelize(str)
+class NodeP4 {
+  static debug_mode = false;
+  [key: string]: any;
+}
+
+function camelize(str: string)
 {
   return str
   .split(/[-_\s]+/) // Split by dash, underscore, or space
@@ -19,11 +23,11 @@ function camelize(str)
 }
 
 // Build a list of options/arguments for the p4 command
-function optionBuilder(options)
+function optionBuilder(options?: any)
 {
   options = options || {};
 
-  var results = { stdin: [], args: [], files: [] };
+  var results: { stdin: string[]; args: any[]; files: any[] } = { stdin: [], args: [], files: [] };
   Object.keys(options).map(function (option)
   {
     var p4option = p4options[option];
@@ -61,7 +65,7 @@ function optionBuilder(options)
 }
 
 // Filter passed-in options to get a hash of child process options (i.e., not p4 command arguments)
-function execOptionBuilder(options)
+function execOptionBuilder(options?: any)
 {
   var validKeys =
   {
@@ -88,7 +92,7 @@ function execOptionBuilder(options)
   }, {});
 }
 
-function execP4(p4cmd, options, callback)
+function execP4(p4cmd: string, options?: any, callback?: any)
 {
   if (typeof options === 'function')
   {
@@ -182,7 +186,6 @@ function processZtagOutput(output)
   }, {});
 }
 
-function NodeP4() {}
 
 NodeP4.prototype.changelist =
 {
@@ -253,7 +256,7 @@ NodeP4.prototype.changelist =
         return '@@@' + match.substring(3);
       });
 
-      var result = {};
+      var result: any = {};
       var lines = stdout.replace(/#(.)*\n/g, '').split(os.EOL + os.EOL);
       lines.forEach(function (line)
       {
@@ -517,12 +520,12 @@ NodeP4.prototype.setDebugMode = function (debug_active)
 var commonCommands = ['add', 'delete', 'edit', 'revert', 'sync', 'diff', 'reconcile', 'reopen', 'resolved',
                       'shelve', 'unshelve', 'client', 'resolve', 'submit', 'describe', 'files', 'have', 'login', 'logout'];
 
-commonCommands.forEach(function (command)
-{
-  NodeP4.prototype[command] = function (options, callback)
-  {
+commonCommands.forEach(function (command) {
+  NodeP4.prototype[command] = function (options: any, callback: any) {
     execP4(command, options, callback);
   };
 });
 
-module.exports = new NodeP4();
+const instance = new NodeP4();
+export default instance;
+(module as any).exports = instance;

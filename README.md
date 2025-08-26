@@ -3,6 +3,8 @@ reckless-node-perforce
 
 A simplified fork of node-perforce with vulnerable dependencies removed and fixed commands.
 
+The library is now implemented in **TypeScript**, providing bundled type definitions for modern TypeScript projects.
+
 ## Install
 
 ```sh
