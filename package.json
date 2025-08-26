@@ -2,8 +2,12 @@
   "name": "reckless-node-perforce",
   "version": "1.0.11",
   "description": "Simplified fork of node-perforce with vulnerable dependencies removed and fixed commands",
-  "main": "index.js",
-  "scripts": {},
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RecklessWave/reckless-node-perforce.git"
@@ -20,5 +24,8 @@
     "url": "https://github.com/RecklessWave/reckless-node-perforce/issues"
   },
   "homepage": "https://github.com/RecklessWave/reckless-node-perforce",
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.2"
+  }
 }
